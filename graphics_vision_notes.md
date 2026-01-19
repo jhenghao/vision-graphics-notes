@@ -42,53 +42,81 @@ Both fields use the same mathematical foundation but in opposite directions:
 
 ## 1.1 Pinhole Camera Model
 
-The pinhole camera is the simplest model of image formation. Light from a 3D point passes through a tiny hole (the pinhole) and projects onto an image plane behind it.
+The pinhole camera model is the simplest representation of a camera, describing the mathematical relationship between coordinates of a 3D point in the world and its projection onto a 2D image plane.
 
-### Similar Triangles: Why Projection Divides by z
+### 1.1.1 The Geometry
 
-```
-                    3D Point (x_c, y_c, z_c)
-                         *
-                        /|
-                       / |
-                      /  | y_c
-                     /   |
-                    /    |
-        Image     /     |
-        Plane    /      |
-          |     /       |
-          |    /        |
-    y_img |   /         |
-          |  /          |
-          | /           |
-          |/____________|
-          C (camera)    x_c
-          |
-          |←─ f ─→|←── z_c ──→|
-```
+The physical setup of a pinhole camera involves:
 
-By similar triangles, the relationship between the 3D point and its projection is:
+- **Pinhole (Center of Projection)**: Located at the origin $(0,0,0)$. All light rays pass through this single point.
+- **Object**: Located in the world at coordinates $(X,Y,Z)$. In this standard formulation, objects are **in front** of the camera ($Z > 0$).
+- **Image Plane**: Located at a physical distance $f$ (focal length) **behind** the pinhole center (at $Z=-f$). This is where the image is formed.
+- **Optical Axis**: The line passing through the center and perpendicular to the image plane (the Z-axis).
 
-$$\frac{x_{image}}{f} = \frac{x_c}{z_c}$$
+Notice that the image formed on the physical image plane is inverted (upside down and reversed left-to-right) relative to the object.
 
-Rearranging:
+### 1.1.2 Mathematical Formulation
 
-$$x_{image} = f \cdot \frac{x_c}{z_c}$$
+The relationship is derived using similar triangles formed by the object and optical axis, and the image and optical axis.
 
-### The Fundamental Projection Equations
+For a point $(X,Y,Z)$ in 3D space, its projected point $(x,y)$ on the physical image plane (at $Z=-f$) is given by:
 
-In the OpenGL/NeRF convention where the camera looks down **−Z**, points in front of the camera have **z_c < 0**. Setting the image plane at z = −1 (unit distance in front):
+$$x = -f \frac{X}{Z}$$
+$$y = -f \frac{Y}{Z}$$
 
-$$x_{proj} = \frac{x_c}{-z_c}, \quad y_{proj} = \frac{y_c}{-z_c}$$
+**Where**:
+- $(x,y)$ are the coordinates on the image plane.
+- $f$ is the focal length.
+- The negative sign indicates the image is inverted.
 
-**Why divide by −z_c?**
-- The camera looks down −Z, so objects in front have negative z
-- Dividing by −z_c (a positive number for visible objects) keeps the projected coordinates correctly oriented
-- This makes far objects appear smaller — exactly like real cameras and human eyes
+### 1.1.3 The "Virtual" Image Plane
 
-> **Key Insight**: Perspective projection divides by z to make distant objects appear smaller, exactly like how real cameras and human eyes work.
+In computer vision and computer graphics, we often prefer not to deal with inverted coordinates. To solve this, we mathematically place a **virtual image plane** in front of the pinhole (at $Z=+f$) rather than behind it.
 
----
+In this model, the projection equations become:
+
+$$x = f \frac{X}{Z}$$
+$$y = f \frac{Y}{Z}$$
+
+This creates an **upright image** and simplifies the math, which is why you will often see the equation written without the negative sign in textbooks.
+
+### 1.1.4 Matrix Form (Homogeneous Coordinates)
+
+This projection can be elegantly expressed as a linear mapping using homogeneous coordinates. We convert the 3D point $(X,Y,Z)$ to $(X,Y,Z,1)$ and multiply it by a camera matrix $P$:
+
+$$
+\begin{bmatrix} x' \\ y' \\ w \end{bmatrix} = 
+\begin{bmatrix} 
+f & 0 & 0 & 0 \\ 
+0 & f & 0 & 0 \\ 
+0 & 0 & 1 & 0 
+\end{bmatrix} 
+\begin{bmatrix} X \\ Y \\ Z \\ 1 \end{bmatrix}
+$$
+
+To get the final 2D coordinates, we divide by the third component $w$ (which equals $Z$ here):
+
+$$x = x'/w = fX/Z$$
+$$y = y'/w = fY/Z$$
+
+### 1.1.5 Important: Converting to OpenGL Convention (-Z)
+
+> [!IMPORTANT]
+> **Coordinate System Conflict Alert**
+> The derivation above uses the **Standard Computer Vision Convention** (Camera looks down $+Z$). However, most graphics APIs (OpenGL, Blender) and NeRF implementations (colmap) use the **OpenGL Convention** (Camera looks down $-Z$).
+
+In the rest of these notes, we use the **OpenGL Convention**:
+- **Forward** is $-Z$.
+- **Object** is at $Z_{gl} < 0$.
+- **Virtual Image Plane** is at $Z_{gl} = -1$ (looking down $-Z$).
+
+To map the standard math to OpenGL:
+1.  Flip the Z axis: $Z_{gl} = -Z_{cv}$
+2.  The projection equation $x = f X / Z_{cv}$ becomes $x = f X / (-Z_{gl})$.
+3.  This matches the OpenGL projection formula used in Section 1.1: $x = X / (-Z)$.
+
+**Key Takeaway**: The physics is the same, but the sign of $Z$ flips depending on which way the camera "looks".
+
 
 ## 1.2 Camera Coordinate System
 
