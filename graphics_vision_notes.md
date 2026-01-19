@@ -155,31 +155,53 @@ This means:
 
 ## 1.3 Focal Length and Image Plane
 
-### Focal Length is Always Positive
+### 1.3.1 Physics vs. Computer Vision Conventions
 
-The focal length **f** is a physical distance:
+There is often confusion about whether focal length is positive or negative. The answer depends on whether you are doing **Physical Optics** or **Computer Vision Geometry**.
 
-$$f > 0 \quad \text{(always)}$$
+#### In Physics & Optics
+In strict optical terms, the **sign** of the focal length determines the type of lens or mirror:
 
-It represents the distance from the camera center (pinhole) to the image plane. Since distances are non-negative by definition, f is always positive.
+1.  **Positive Focal Length ($+f$)**: Indicates a **converging** system. Light rays coming in parallel are bent *towards* each other to meet at a single point (focus).
+    *   **Examples**: Camera lenses, human eye, magnifying glass.
+2.  **Negative Focal Length ($-f$)**: Indicates a **diverging** system. Light rays spread *out*, appearing to originate from a virtual point.
+    *   **Examples**: Nearsighted glasses, peepholes, passenger-side car mirrors.
 
-> If you ever see a "negative focal length," that's not physics — it's a coordinate convention issue.
+| Sign of $f$ | Type | Effect on Light | Example |
+| :--- | :--- | :--- | :--- |
+| **Positive (+)** | Converging | Brings rays together | Camera lens |
+| **Negative (-)** | Diverging | Spreads rays apart | Myopia glasses |
 
-### Image Plane Location
+#### In Computer Vision & Graphics
+Models almost exclusively deal with **converging systems** (cameras). Therefore, physically, $f$ acts as a positive scalar magnitude.
 
-Since the camera looks down −Z, the image plane is placed at:
+However, the **mathematical sign** depends on the coordinate system choices:
 
-$$z = -f$$
+*   **Physical Image Plane**: Located at distance $f$ behind the center.
+*   **Virtual Image Plane**: Mathematically modeled in front of the center to avoid image inversion.
 
-The negative sign comes from the coordinate system choice, not from f being negative:
-- **f is positive** (physical distance)
-- **z = −f is negative** because "forward" is the negative Z direction
+### 1.3.2 The Impact of Coordinate Systems
 
-### Common Misconception Clarified
+The "sign" of $f$ in equations depends on which way your Z-axis points.
+
+#### Case A: Standard Computer Vision (Forward = $+Z$)
+*   **Virtual Image Plane**: Located at $Z = +f$ (positive coordinate).
+*   **Projection Equation**: $x = f \cdot (X/Z)$.
+*   Here, everything feels positive. This is the "textbook" definition.
+
+#### Case B: OpenGL & NeRF (Forward = $-Z$)
+*   This is the convention we use in these notes.
+*   **Virtual Image Plane**: Located at $Z = -f$ (negative coordinate).
+*   **Projection Equation**: $x = f \cdot (X / -Z)$.
+*   Here, $f$ is a **positive magnitude**, but the plane position is negative because the camera looks down the negative axis.
+
+> **Key Takeaway**: In this document, $f$ is always treated as a **positive distance**. If you see a negative sign (e.g., $z = -f$), it is purely a result of the coordinate system (looking down $-Z$), not an indication of a diverging lens.
+
+### 1.3.3 Common Misconception Clarified
 
 > "The image plane is behind the camera in OpenGL"
 
-This statement is misleading. The **virtual image plane** used for mathematical convenience is at z = −f, which is **in front of the camera** (in the direction the camera looks). This avoids image flipping and keeps equations simple. It does not mean the camera sees backward.
+This statement is misleading. The **virtual image plane** used for mathematical convenience is at $z = -f$, which is **in front of the camera** (in the direction the camera looks). This avoids image flipping and keeps equations simple. It does not mean the camera sees backward.
 
 ---
 
