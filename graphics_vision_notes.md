@@ -85,18 +85,13 @@ This creates an **upright image** and simplifies the math, which is why you will
 This projection can be elegantly expressed as a linear mapping using homogeneous coordinates. We convert the 3D point $(X,Y,Z)$ to $(X,Y,Z,1)$ and multiply it by a camera matrix $P$:
 
 $$
-\begin{bmatrix}
-x' \\ y' \\ w
-\end{bmatrix}
-=
-\begin{bmatrix}
-f & 0 & 0 & 0 \\
-0 & f & 0 & 0 \\
-0 & 0 & 1 & 0
-\end{bmatrix}
-\begin{bmatrix}
-X \\ Y \\ Z \\ 1
-\end{bmatrix}
+\begin{bmatrix} x' \\ y' \\ w \end{bmatrix} = 
+\begin{bmatrix} 
+f & 0 & 0 & 0 \\ 
+0 & f & 0 & 0 \\ 
+0 & 0 & 1 & 0 
+\end{bmatrix} 
+\begin{bmatrix} X \\ Y \\ Z \\ 1 \end{bmatrix}
 $$
 
 To get the final 2D coordinates, we divide by the third component $w$ (which equals $Z$ here):
