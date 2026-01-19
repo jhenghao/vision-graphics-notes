@@ -197,13 +197,12 @@ The "sign" of $f$ in equations depends on which way your Z-axis points.
 
 > **Key Takeaway**: In this document, $f$ is always treated as a **positive distance**. If you see a negative sign (e.g., $z = -f$), it is purely a result of the coordinate system (looking down $-Z$), not an indication of a diverging lens.
 
-### 1.3.3 Common Misconception Clarified
-
+#### Common Misconception Clarified
 > "The image plane is behind the camera in OpenGL"
 
 This statement is misleading. The **virtual image plane** used for mathematical convenience is at $z = -f$, which is **in front of the camera** (in the direction the camera looks). This avoids image flipping and keeps equations simple. It does not mean the camera sees backward.
 
-### 1.3.4 Physical Units (mm) vs. Pixel Units
+### 1.3.3 Physical Units (mm) vs. Pixel Units
 
 Focal length is the same physical property in both fields, but expressed in different units.
 
