@@ -203,6 +203,36 @@ The "sign" of $f$ in equations depends on which way your Z-axis points.
 
 This statement is misleading. The **virtual image plane** used for mathematical convenience is at $z = -f$, which is **in front of the camera** (in the direction the camera looks). This avoids image flipping and keeps equations simple. It does not mean the camera sees backward.
 
+### 1.3.4 Physical Units (mm) vs. Pixel Units
+
+Focal length is the same physical property in both fields, but expressed in different units.
+
+1.  **Physics/Optics ($f_{mm}$)**: Measured in **millimeters**. This is what you see printed on a lens (e.g., "50mm").
+2.  **Computer Vision ($f_{pix}$)**: Measured in **pixels**. This is what goes into the algorithms.
+
+#### Why Pixels?
+The projection equation is $x = f \cdot \frac{X}{Z}$.
+*   $X$ and $Z$ are in meters (units cancel).
+*   $x$ needs to be in pixels.
+*   Therefore, $f$ must technically be in **pixels** to balance the equation.
+
+#### Conversion Formula
+You can convert between the two if you know the physical properties of the camera sensor.
+
+$$f_{pix} = \frac{f_{mm}}{\text{sensor pixel size in mm}}$$
+
+Or more formally, if the sensor has a pixel density of $m_x$ (pixels per millimeter):
+$$f_x (\text{pixels}) = f_{mm} \times m_x$$
+
+**Example**:
+*   Lens $f = 4\text{mm}$
+*   Sensor pixel width = $0.002\text{mm}$ ($2\mu\text{m}$)
+*   $f_{pix} = 4 / 0.002 = \mathbf{2000 \text{ pixels}}$
+
+#### Why often two focal lengths ($f_x, f_y$)?
+Ideally, pixels are perfect squares, so $f_x = f_y$.
+Realistically, on some specialized sensors, pixels might be non-square (rectangular). The conversion from millimeters to pixels would differ for width vs. height, resulting in $f_x \neq f_y$. This is why the intrinsic matrix $K$ tracks them separately.
+
 ---
 
 ## 1.4 Camera Intrinsics (K Matrix)
