@@ -85,13 +85,22 @@ This creates an **upright image** and simplifies the math, which is why you will
 This projection can be elegantly expressed as a linear mapping using homogeneous coordinates. We convert the 3D point $(X,Y,Z)$ to $(X,Y,Z,1)$ and multiply it by a camera matrix $P$:
 
 $$
-\begin{bmatrix} x' \\ y' \\ w \end{bmatrix} = 
-\begin{bmatrix} 
-f & 0 & 0 & 0 \\ 
-0 & f & 0 & 0 \\ 
-0 & 0 & 1 & 0 
-\end{bmatrix} 
-\begin{bmatrix} X \\ Y \\ Z \\ 1 \end{bmatrix}
+\begin{bmatrix}
+x' \\
+y' \\
+w
+\end{bmatrix} =
+\begin{bmatrix}
+f & 0 & 0 & 0 \\
+0 & f & 0 & 0 \\
+0 & 0 & 1 & 0
+\end{bmatrix}
+\begin{bmatrix}
+X \\
+Y \\
+Z \\
+1
+\end{bmatrix}
 $$
 
 To get the final 2D coordinates, we divide by the third component $w$ (which equals $Z$ here):
@@ -240,7 +249,13 @@ The intrinsic matrix **K** encodes the camera's internal parameters that map 3D 
 
 ### The Intrinsic Matrix
 
-$$K = \begin{bmatrix} f_x & 0 & c_x \\ 0 & f_y & c_y \\ 0 & 0 & 1 \end{bmatrix}$$
+$$
+K = \begin{bmatrix}
+f_x & 0 & c_x \\
+0 & f_y & c_y \\
+0 & 0 & 1
+\end{bmatrix}
+$$
 
 ### Parameters Explained
 
@@ -302,7 +317,26 @@ For ordinary points, we set **w = 1**.
 
 A 3D translation by (t_x, t_y, t_z) becomes:
 
-$$\begin{bmatrix} 1 & 0 & 0 & t_x \\ 0 & 1 & 0 & t_y \\ 0 & 0 & 1 & t_z \\ 0 & 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix} = \begin{bmatrix} x + t_x \\ y + t_y \\ z + t_z \\ 1 \end{bmatrix}$$
+$$
+\begin{bmatrix}
+1 & 0 & 0 & t_x \\
+0 & 1 & 0 & t_y \\
+0 & 0 & 1 & t_z \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+z \\
+1
+\end{bmatrix} =
+\begin{bmatrix}
+x + t_x \\
+y + t_y \\
+z + t_z \\
+1
+\end{bmatrix}
+$$
 
 Translation is now just a matrix multiply — that's the key benefit.
 
@@ -463,7 +497,14 @@ Everything in the matrix exists to enforce one of these properties.
 
 ### The OpenGL Perspective Matrix
 
-$$P = \begin{bmatrix} \frac{1}{a \cdot \tan(\theta/2)} & 0 & 0 & 0 \\ 0 & \frac{1}{\tan(\theta/2)} & 0 & 0 \\ 0 & 0 & -\frac{f+n}{f-n} & -\frac{2fn}{f-n} \\ 0 & 0 & -1 & 0 \end{bmatrix}$$
+$$
+P = \begin{bmatrix}
+\frac{1}{a \cdot \tan(\theta/2)} & 0 & 0 & 0 \\
+0 & \frac{1}{\tan(\theta/2)} & 0 & 0 \\
+0 & 0 & -\frac{f+n}{f-n} & -\frac{2fn}{f-n} \\
+0 & 0 & -1 & 0
+\end{bmatrix}
+$$
 
 Where:
 - θ = vertical field of view
@@ -754,7 +795,12 @@ Without the minus sign, the image would be vertically flipped.
 
 The **camera-to-world** (c2w) matrix transforms from camera space to world space.
 
-$$c2w = \begin{bmatrix} R_{3\times3} & t_{3\times1} \\ 0_{1\times3} & 1 \end{bmatrix}$$
+$$
+c2w = \begin{bmatrix}
+R_{3\times3} & t_{3\times1} \\
+0_{1\times3} & 1
+\end{bmatrix}
+$$
 
 ### Two Components
 
