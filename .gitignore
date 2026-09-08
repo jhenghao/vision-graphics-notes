@@ -1,0 +1,7 @@
+# Obsidian local UI state (not shared config)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.trash/
+
+# Python virtualenv (only ever used for one-off PDF text extraction)
+.venv/

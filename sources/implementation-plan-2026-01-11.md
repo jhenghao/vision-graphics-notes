@@ -1,4 +1,14 @@
+---
+type: process-doc
+date: 2026-01-11
+---
+
 # Reorganize NDC Discussion: Unified Graphics & Vision Notes
+
+> Archived process doc: the plan used to reorganize the raw ChatGPT PDF
+> ([[sources/ndc_discussion.pdf]]) into what was then a single
+> `graphics_vision_notes.md`, later split into the `concepts/` notes in this
+> vault. Kept for historical reference — **not maintained**.
 
 ## Background
 

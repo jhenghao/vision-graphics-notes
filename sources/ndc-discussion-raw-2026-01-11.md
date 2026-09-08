@@ -1,3 +1,15 @@
+---
+type: chatgpt-conversation
+date: 2026-01-11
+---
+
+# ChatGPT: NDC, homogeneous coordinates, graphics pipeline, and NeRF
+
+Raw transcript, extracted from the exported PDF ([[sources/ndc_discussion.pdf]]).
+Pasted as-is — page breaks below are artifacts of the PDF extraction.
+
+---
+
 Total pages: 72
 ================================================================================
 --- Page 1 ---
